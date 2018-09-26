@@ -13,7 +13,7 @@
     "url": "git+ssh://github.com/JamieMagee/teams-for-linux"
   },
   "author": "Ivelin Velkov <ivelin.velkov@gmail.com>",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "yarn install && yarn compile && electron ./app",
