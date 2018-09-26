@@ -1,90 +1,61 @@
-import { app, ipcMain, BrowserWindow } from 'electron';
-import { configBuilder } from './config';
-import open from 'opn';
-import path from 'path';
-import windowStateKeeper from 'electron-window-state';
-import yargs from 'yargs';
+import { app } from 'electron';
+import { WindowController } from './controller/window-controller';
+import { TrayController } from './controller/tray-controller';
 
-const DEFAULT_WINDOW_WIDTH = 800;
-const DEFAULT_WINDOW_HEIGHT = 800;
+class ElectronTeams {
+  windowController!: WindowController;
+  trayController!: TrayController;
 
-import { Menus } from './menus';
+  constructor() {
+    this.windowController = null;
+    this.trayController = null;
+  }
 
-let menus;
-
-function createWindow(iconPath) {
-  // Load the previous state with fallback to defaults
-  let windowState = windowStateKeeper({
-    defaultWidth: DEFAULT_WINDOW_WIDTH,
-    defaultHeight: DEFAULT_WINDOW_HEIGHT
-  });
-
-  // Create the window
-  const window = new BrowserWindow({
-    x: windowState.x,
-    y: windowState.y,
-
-    width: windowState.width,
-    height: windowState.height,
-
-    autoHideMenuBar: true,
-
-    webPreferences: {
-      partition: 'persist:teams',
-      preload: path.join(__dirname, 'browser', 'index.js'),
-      nodeIntegration: false
+  // init method, the entry point of the app
+  init() {
+    if (this.isRunning()) {
+      app.quit();
+    } else {
+      this.initApp();
     }
-  });
+  }
 
-  windowState.manage(window);
+  // check if the app is already running. return true if already launched, otherwise return false.
+  isRunning() {
+    return app.hasSingleInstanceLock();
+  }
 
-  return window;
+  // init the main app
+  initApp() {
+    // This method will be called when Electron has finished
+    // initialization and is ready to create browser windows.
+    // Some APIs can only be used after this event occurs.
+    app.on('ready', this.createControllers);
+
+    app.on('second-instance', () => {
+      if (this.windowController) this.windowController.win.show();
+    });
+
+    // Quit when all windows are closed.
+    app.on('window-all-closed', () => {
+      app.quit();
+    });
+
+    app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (this.windowController === null) {
+        this.createControllers();
+      } else {
+        this.windowController.win.show();
+      }
+    });
+  }
+
+  createControllers() {
+    this.windowController = new WindowController();
+    this.trayController = new TrayController(this.windowController);
+  }
 }
 
-let config: yargs.Arguments;
-
-app.on('ready', () => {
-  const iconPath = path.join(__dirname, './assets/icons/icon-96x96.png');
-  const window = createWindow(iconPath);
-  config = configBuilder(app.getPath('userData'));
-
-  menus = new Menus(config, iconPath);
-  menus.register(window);
-
-  window.on('page-title-updated', (event, title) =>
-    window.webContents.send('page-title', title)
-  );
-
-  ipcMain.on('nativeNotificationClick', event => {
-    window.show();
-    window.focus();
-  });
-
-  window.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
-    try {
-      open(url);
-    } catch (e) {
-      console.error(`exec error: ${e.message}`);
-    }
-  });
-
-  if (config.userAgent === 'edge') {
-    window.webContents.setUserAgent(config.edgeUserAgent);
-  } else {
-    window.webContents.setUserAgent(config.chromeUserAgent);
-  }
-
-  window.loadURL(config.url);
-
-  if (config.webDebug) {
-    window.webContents.openDevTools();
-  }
-});
-
-app.on('login', function(event, webContents, request, authInfo, callback) {
-  event.preventDefault();
-  if (typeof config.firewallUsername !== 'undefined') {
-    callback(config.firewallUsername, config.firewallPassword);
-  }
-});
+new ElectronTeams().init();
