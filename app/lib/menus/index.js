@@ -33,26 +33,33 @@ class Menus {
     window.show();
   }
 
+  static debug(window) {
+    window.webContents.openDevTools();
+  }
+
   register(window) {
-    const appMenu = new Menu.buildFromTemplate(
-      [
-        {
-          label: 'Open',
-          accelerator: 'ctrl+O',
-          click: () => Menus.open(window)
-        },
-        {
-          label: 'Refresh',
-          accelerator: 'ctrl+R',
-          click: () => Menus.reload(window)
-        },
-        {
-          label: 'Quit',
-          accelerator: 'ctrl+Q',
-          click: () => Menus.quit()
-        }
-      ]
-    );
+    const appMenu = Menu.buildFromTemplate([
+      {
+        label: 'Open',
+        accelerator: 'ctrl+O',
+        click: () => Menus.open(window)
+      },
+      {
+        label: 'Refresh',
+        accelerator: 'ctrl+R',
+        click: () => Menus.reload(window)
+      }, 
+      {
+        label: 'Debug',
+        accelerator: 'F12',
+        click: () => Menus.debug(window)  
+      }, 
+      {
+        label: 'Quit',
+        accelerator: 'ctrl+Q',
+        click: () => Menus.quit()
+      }
+    ]);
 
     window.setMenu(new Menu.buildFromTemplate([
       {

@@ -10,7 +10,7 @@ const {
 } = require('electron');
 const configBuilder = require('./config');
 
-const DEFAULT_WINDOW_WIDTH = 800;
+const DEFAULT_WINDOW_WIDTH = 1024;
 const DEFAULT_WINDOW_HEIGHT = 800;
 
 const Menus = require('./menus');
@@ -32,8 +32,9 @@ function createWindow(iconPath) {
     width: windowState.width,
     height: windowState.height,
 
+    icon: __dirname + 'app/lib/assets/icons/icon-96x96.png',
     iconPath,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
 
     webPreferences: {
       partition: 'persist:teams',
@@ -71,6 +72,16 @@ app.on('ready', () => {
     });
   });
 
+  window.webContents.on('will-navigate', function (event, newUrl) {
+    console.log(newUrl);
+    // More complex code to handle tokens goes here
+  });
+
+  window.webContents.on('did-get-redirect-request', function (event, oldUrl, newUrl) {
+    console.log(newUrl);
+    // More complex code to handle tokens goes here
+  });
+
   if (config.userAgent === 'edge') {
     window.webContents.setUserAgent(config.edgeUserAgent);
   } else {
@@ -86,6 +97,7 @@ app.on('ready', () => {
 
 app.on('login', function (event, webContents, request, authInfo, callback) {
   event.preventDefault();
+  console.error('indicate where I am');
   if (typeof config.firewallUsername !== 'undefined') {
     callback(config.firewallUsername, config.firewallPassword);
   }
