@@ -1,27 +1,36 @@
 'use strict';
 
 const { nativeImage } = require('electron');
+const notifier = require("electron-notifications");
 
 exports = module.exports = ({ ipc, iconPath }) => {
   return () => {
-    const icon = nativeImage.createFromPath(iconPath);
-    if (typeof Notify !== 'undefined') {      
-      Notify.prototype.show = function show() {
-        const notification = new Notification(this.title, {
-          body: this.options.body,
-          icon: icon.toDataURL()
-        });
-        // ipc.send('notification-shown',{ 
-        //   title: this.title,
-        //   options: {
-        //     body: this.options.body,
-        //     icon: icon.toDataURL()
-        //   }
-        // });
-        notification.onclick = () => {
-          ipc.send('nativeNotificationClick');
-        };
-      };
+    
+    function NotificationTrigger(message) {
+      var notification = notifier.notify("Teams", {
+        message: message,
+        icon: iconPath,
+        buttons: ["Dismiss"],
+        vertical: true
+  });
+  
+      notification.on("clicked", function() {
+        notification.close();
+      });
     }
+    var hasNotification = false;
+    document.addEventListener("DOMNodeInserted", function(e) {
+      var toast = document.getElementById("toast-container");
+      console.log(toast);
+      if (toast) {
+        if (hasNotification == false) NotificationTrigger(toast);
+
+        hasNotification = true;
+      }
+    });
+
+  document.addEventListener("DOMNodeRemoved", function() {
+      hasNotification = false;
+    });
   };
 };

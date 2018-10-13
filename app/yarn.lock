@@ -54,10 +54,30 @@ deep-equal@^1.0.1:
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
   integrity sha1-9dJgKStmDghO/0zbyfCK0yR0SLU=
 
+electron-is-dev@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.3.0.tgz#14e6fda5c68e9e4ecbeff9ccf037cbd7c05c5afe"
+  integrity sha1-FOb9pcaOnk7L7/nM8DfL18BcWv4=
+
+electron-is@^2.3.0:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/electron-is/-/electron-is-2.4.1.tgz#eb2de19b30179c3ba21658ee9dccdf0564d35d65"
+  integrity sha512-cWPJVsyfU1lTbUCwOyEhTChl+dU5OTPgQ/qffX72aBaWE2YcgmUriRrDioBn5gnlMok/LctTzcnJSVSTUJJMjg==
+  dependencies:
+    electron-is-dev "^0.3.0"
+    semver "^5.3.0"
+
 electron-native-notification@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/electron-native-notification/-/electron-native-notification-1.2.1.tgz#24831008fda635ddf5adb0ccedfca5dcf3f35fdc"
   integrity sha512-vjbhA80nrzFtC33jDk+6a5z55vrannZtWd14clMDEj8YlFRLxIDbunjOaT3yBiHNBK7c/fGNtYkVZYMYgFpc1Q==
+
+electron-notifications@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-notifications/-/electron-notifications-1.0.0.tgz#b93613e2333f22aa4f6b9d3275cc9f3cf80f4d22"
+  integrity sha1-uTYT4jM/IqpPa50ydcyfPPgPTSI=
+  dependencies:
+    electron-is "^2.3.0"
 
 electron-window-state@~4.1.1:
   version "4.1.1"
@@ -276,6 +296,11 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
+
+semver@^5.3.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
+  integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
 semver@^5.5.0:
   version "5.5.1"

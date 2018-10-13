@@ -44,12 +44,10 @@ exports = module.exports = ({ ipc, iconPath }) => {
     console.log('notifications');
   });
   ipc.on('page-title', () => {
-    //console.log();
     if (typeof angular === 'undefined') {
       return;
     }
     var element = angular.element(document.documentElement).controller();
-    // console.log("document.documentElement", document.documentElement);
     if (!element) {
       return;
     }
@@ -58,15 +56,15 @@ exports = module.exports = ({ ipc, iconPath }) => {
 
     if (lastCount !== count) {
       lastCount = count;
-      let toast = $.find('#toast-container > div > div > div.toast-message > p.title.app-max-2-lines-base')[0];
-      let innerText = (toast) ? toast.innerText : ""
+     // let toast = $.find('#toast-container > div > div > div.toast-message > p.title.app-max-2-lines-base')[0];
+     // let innerText = (toast) ? toast.innerText : ""
 
       buildIcon({ count, icon: nativeImage.createFromPath(iconPath) }).then(
         icon => {
           ipc.send('notifications', {
             count,
-            icon,
-            text: innerText
+            icon//,
+       //     text: innerText
           });
         }
       );
