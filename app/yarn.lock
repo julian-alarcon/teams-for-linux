@@ -67,11 +67,6 @@ electron-is@^2.3.0:
     electron-is-dev "^0.3.0"
     semver "^5.3.0"
 
-electron-native-notification@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/electron-native-notification/-/electron-native-notification-1.2.1.tgz#24831008fda635ddf5adb0ccedfca5dcf3f35fdc"
-  integrity sha512-vjbhA80nrzFtC33jDk+6a5z55vrannZtWd14clMDEj8YlFRLxIDbunjOaT3yBiHNBK7c/fGNtYkVZYMYgFpc1Q==
-
 electron-notifications@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/electron-notifications/-/electron-notifications-1.0.0.tgz#b93613e2333f22aa4f6b9d3275cc9f3cf80f4d22"

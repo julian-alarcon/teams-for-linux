@@ -56,15 +56,12 @@ exports = module.exports = ({ ipc, iconPath }) => {
 
     if (lastCount !== count) {
       lastCount = count;
-     // let toast = $.find('#toast-container > div > div > div.toast-message > p.title.app-max-2-lines-base')[0];
-     // let innerText = (toast) ? toast.innerText : ""
-
+   
       buildIcon({ count, icon: nativeImage.createFromPath(iconPath) }).then(
         icon => {
           ipc.send('notifications', {
             count,
-            icon//,
-       //     text: innerText
+            icon
           });
         }
       );
