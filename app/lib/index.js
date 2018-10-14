@@ -106,9 +106,8 @@ app.on('ready', () => {
   } else {
     window.webContents.setUserAgent(config.chromeUserAgent);
   }
-
   
-  window.once('ready-to-show', () => window.show());
+  window.once('ready-to-show', () => window.show() );
 
   window.loadURL(config.url);
 });

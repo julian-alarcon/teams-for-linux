@@ -3,34 +3,39 @@
 const { nativeImage } = require('electron');
 const notifier = require("electron-notifications");
 
-exports = module.exports = ({ ipc, iconPath }) => {
-  return () => {
-    
-    function NotificationTrigger(message) {
-      var notification = notifier.notify("Teams", {
-        message: message,
-        icon: iconPath,
-        buttons: ["Dismiss"],
-        vertical: true
+function notificationTrigger(message) {
+  let notification = notifier.notify("Teams", {
+    message: message,
+    buttons: ["Dismiss"],
+    vertical: true
   });
-  
-      notification.on("clicked", function() {
-        notification.close();
-      });
-    }
-    var hasNotification = false;
-    document.addEventListener("DOMNodeInserted", function(e) {
-      var toast = document.getElementById("toast-container");
-      console.log(toast);
-      if (toast) {
-        if (hasNotification == false) NotificationTrigger(toast);
+  notification.on("clicked", function () {
+    notification.close();
+  });
+}
 
-        hasNotification = true;
+exports = module.exports = ({ ipc, iconPath }) => {
+  setTimeout(() => {
+    var targetNode = document.documentElement || document.body;
+
+    var config = { attributes: true, childList: true, subtree: true };
+
+    var callback = function (mutationsList) {
+      for (var mutation of mutationsList) {
+        if (mutation.type == 'childList') {
+          if (mutation.target.id === "toast-container") {
+            //investigate how to get it from the toast message itself
+            let message = mutation.target.innerText;
+            notificationTrigger(message);
+            console.log('A child node has been added or removed.', mutation);
+          }
+        }
       }
-    });
+    };
 
-  document.addEventListener("DOMNodeRemoved", function() {
-      hasNotification = false;
-    });
-  };
+    var observer = new MutationObserver(callback);
+
+    observer.observe(targetNode, config);
+  }, 7000);
 };
+
