@@ -3,6 +3,7 @@ import path = require('path');
 import { readFileSync } from 'fs';
 
 const teamsUrl = 'https://teams.microsoft.com';
+const chromeUserAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3';
 
 export class WindowController {
   win!: BrowserWindow | null;
@@ -17,13 +18,16 @@ export class WindowController {
       height: 768,
       autoHideMenuBar: true,
       webPreferences: {
+        partition: 'nopersist',
         nodeIntegration: false
       }
     });
 
     // and load the index.html of the app.
     this.win.loadURL(teamsUrl);
-
+    
+    this.win.webContents.setUserAgent(chromeUserAgent);
+    
     // prevent the app quit, hide the window instead.
     this.win.on('close', e => {
       if (this.win && this.win.isVisible()) {
