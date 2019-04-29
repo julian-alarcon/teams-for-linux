@@ -30,8 +30,8 @@ parts:
   teams-for-linux:
     # See 'snapcraft plugins'
     plugin: nodejs
-    # node-engine: 8.12.0
-    # node-package-manager: yarn
+    node-engine: 8.12.0
+    node-package-manager: yarn
     source: .
     # stage-packages:
     #   - libasound2
